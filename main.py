@@ -1,14 +1,20 @@
 
-text = """<html><head>
+text = """<html bold italic><head>
 """
 
 
 open_stack = []  #stack to keep opened tags
 
+class Node:
+    def __init__(self, tag_name, tag_attribs):
+        self.tag_name = tag_name 
+        self.tag_attribs = tag_attribs
+        self.children = []
 
+    
 
-
-for i in range(len(text)):
+i = 0
+while i < len(text):
     if (text[i] == '<'):
         #tag token
         if (text[i + 1] != '/'):
@@ -21,9 +27,29 @@ for i in range(len(text)):
             tag += ">"
             print(tag)
             
+            j = 1
+            tag_name = ""
+            while j < len(tag):
+                if tag[j] == " " or tag[j] == ">":
+                    break 
+                tag_name += tag[j]
+                j += 1
+
+            tag_attribs = ""
+            while j < len(tag) and tag[j] != ">":
+                tag_attribs += tag[j]
+                j += 1
+
+            # print(tag_name)
+            print(tag_attribs)
+
+            e = Node(tag_name,tag_attribs)
+            open_stack.append(e)
         else:
             #closing tag 
             pass
     else:
         #text token
         pass
+
+    i += 1
