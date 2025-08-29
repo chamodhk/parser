@@ -1,5 +1,14 @@
 
-text = """<html bold italic><head>
+text = """<html>
+  <head>
+    <title>Test Page</title>
+  </head>
+  <body>
+    <h1 bold>Heading 1</h1>
+    <p italic>This is a paragraph.</p>
+  </body>
+</html>
+
 """
 
 
