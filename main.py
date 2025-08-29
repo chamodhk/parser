@@ -1,46 +1,29 @@
 
-import re
-text = """
-
-<html>
-<head>
-    <title> my first parser </title>
-</head>
-<body> This is H1 </body>
-</html>
-
+text = """<html><head>
 """
 
-opening = '^<[a-z]'
-closing = '^</'
-text = text.split()
+
+open_stack = []  #stack to keep opened tags
 
 
-class Elemenet:
-    def __init__(self, tag, content):
-        self.tag = tag 
-        self.content = content
-        self.children = []
 
 
-content = ""
-opening_stack = []
-closing_stack = []
-elements = []
-for tag in text:
-    if re.match(opening, tag):
-        # print(tag, 'opening')
-        opening_stack.append(tag)
-    elif re.match(closing, tag):
-        # print(tag, 'closing')
-        el = Elemenet(opening_stack.pop(), content)
-        content = ""
-        elements.append(el)
-        
+for i in range(len(text)):
+    if (text[i] == '<'):
+        #tag token
+        if (text[i + 1] != '/'):
+            #opening tag
+            i += 1
+            tag = "<"
+            while (text [i]  != ">"): #end of the opening tag
+                tag += text[i]
+                i += 1
+            tag += ">"
+            print(tag)
+            
+        else:
+            #closing tag 
+            pass
     else:
-        content = content + tag +  " "
-# print(text)
-
-for e in elements:
-    print(e.content)
-        
+        #text token
+        pass
