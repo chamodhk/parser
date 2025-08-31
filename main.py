@@ -30,11 +30,16 @@ text_stack = [None]
 
 Root = None
 
+
+
+def clean_text(text):
+    return text.strip()
+
 class Node:
     def __init__(self, tag_name, tag_attribs):
         self.tag_name = tag_name 
         self.tag_attribs = tag_attribs
-        self.tag_content= ""
+        self.content= ""
         self.children = []
 
 
@@ -45,6 +50,7 @@ class Node:
 
 i = 0
 while i < len(text):
+    # print(text[i])
     if (text[i] == '<'):
         #tag token
         if (text[i + 1] != '/'):
@@ -76,6 +82,7 @@ while i < len(text):
             open_tag_stack.append(e)
 
             text_stack.append("")
+ 
         else:
             #closing tag 
             closing_tag = ""
@@ -89,7 +96,9 @@ while i < len(text):
             opening_tag = open_tag_stack.pop()
             tag_contet = text_stack.pop()
             if opening_tag.tag_name == closing_tag:
-                opening_tag.content = tag_contet
+                if clean_text(tag_contet) != "":
+                    opening_tag.content = tag_contet
+                
             else:
                 print("tag mismatch")
 
@@ -101,19 +110,19 @@ while i < len(text):
 
     else:
         #text token
-        if (text_stack[-1]):
-            text_stack[-1] += (text[i])
-
+        if (text_stack[-1] != None):
+            text_stack[-1] = text_stack[-1] + text[i]
     i += 1
 
 
 
 def dfs(node, depth):
+    # print(node.content)
     if (depth == 0):
         prefix = ""
     else:
         prefix = "|" + "-"*depth
-    print(prefix + node.tag_name)
+    print(prefix + node.tag_name, node.content)
     if (node):
         depth += 1
         child_count = len(node.children)
